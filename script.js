@@ -77,7 +77,8 @@ function initScrollAnimations() {
                 entry.target.classList.add('fade-in-up');
                 
                 // Special animations for specific elements
-                if (entry.target.classList.contains('stat-item')) {
+                if (entry.target.classList.contains('stat-item') && !entry.target.hasAttribute('data-animated')) {
+                    entry.target.setAttribute('data-animated', 'true');
                     animateCounter(entry.target.querySelector('.stat-number'));
                 }
                 
@@ -106,12 +107,26 @@ function initScrollAnimations() {
 
 // Counter Animation
 function animateCounter(element) {
-    const originalText = element.textContent;
-    const target = parseInt(originalText);
+    const originalText = element.textContent.trim();
     const hasPlus = originalText.includes('+');
     
+    // Extract the numeric value - handle cases like "2+", "15+", "1200+"
+    let target = parseInt(originalText.replace(/[^0-9]/g, ''));
+    
+    // Ensure we have a valid target
+    if (isNaN(target)) {
+        console.warn('Invalid target for counter animation:', originalText);
+        return;
+    }
+    
     let current = 0;
-    const increment = target / 50;
+    const duration = 2000; // 2 seconds
+    const stepTime = 50; // Update every 50ms
+    const increment = target / (duration / stepTime);
+    
+    // Reset element to 0 before starting animation
+    element.textContent = '0' + (hasPlus ? '+' : '');
+    
     const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
@@ -119,7 +134,7 @@ function animateCounter(element) {
             clearInterval(timer);
         }
         element.textContent = Math.floor(current) + (hasPlus ? '+' : '');
-    }, 40);
+    }, stepTime);
 }
 
 // Typing Animation Enhancement

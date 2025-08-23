@@ -622,6 +622,28 @@ section {
     color: var(--primary-color);
 }
 
+.repo-status {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 8px;
+}
+
+.repo-status.public {
+    background-color: rgba(0, 255, 136, 0.1);
+    color: var(--primary-color);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+.repo-status.private {
+    background-color: rgba(255, 107, 53, 0.1);
+    color: var(--accent-color);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+}
+
 /* Skills Section */
 .skills-grid {
     display: grid;
